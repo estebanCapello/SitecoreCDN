@@ -19,6 +19,7 @@ using System.Collections.Specialized;
 using Sitecore.Security.Domains;
 using System.Xml.Linq;
 using Sitecore.Diagnostics;
+using Sitecore.SecurityModel;
 
 namespace NTTData.SitecoreCDN.Providers
 {
@@ -374,7 +375,8 @@ namespace NTTData.SitecoreCDN.Providers
             }
             else
             {
-                Domain domain = Sitecore.Context.Domain ?? Factory.GetDomain("extranet");
+                //replaced obsolete method for getting the domain
+                Domain domain = Sitecore.Context.Domain ?? DomainManager.GetDomain("extranet");
                 var anon = domain.GetAnonymousUser();
                 if (anon != null)
                     output = media.InnerItem.Security.CanRead(anon);
@@ -393,7 +395,9 @@ namespace NTTData.SitecoreCDN.Providers
         {
             try
             {
-                if (!Settings.Analytics.Enabled)
+                //Replaced old way to know if analytics is enabled
+                string analyticsSetting = "Xdb.Enabled";
+                if (!Settings.GetBoolSetting(analyticsSetting, true))
                     return false;
 
                 string cacheKey = media.ID.ToString() + "_tracked";

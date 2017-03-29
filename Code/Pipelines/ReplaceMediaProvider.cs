@@ -18,9 +18,13 @@ namespace NTTData.SitecoreCDN.Pipelines
     {
         public void Process(PipelineArgs args)
         {
-            Assert.ArgumentNotNull(args, "args");
-            if (CDNSettings.Enabled)
-                MediaManager.Provider = new CDNMediaProvider();
+            //Commented due error on sitecore 8.2 update 1
+            //This configuration needs to be done on the sitecore.config file 
+            //node: mediaProvider
+
+            //Assert.ArgumentNotNull(args, "args");
+            //if (CDNSettings.Enabled)
+            //    MediaManager.MediaProvider = new CDNMediaProvider();
         }
     }
 }
